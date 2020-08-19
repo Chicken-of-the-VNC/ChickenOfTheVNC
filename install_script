@@ -1,0 +1,90 @@
+!bin/bash
+
+# Script:                       Op Challenge Day 13
+# Author:                       Courtney Hans
+# Date of latest revision:      8/18/20
+# Purpose:                      Check software installation per user
+
+# Declare variables
+user=$(whoami)
+
+# Declare functions
+
+chrome_check () {
+if [ $(dpkg-query -W -f='${Status}' chromium-browser 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+sudo apt install chromium-browser
+fi
+echo "Chrome is installed for" $user
+}
+
+firefox_check () {
+if [ $(dpkg-query -W -f='${Status}' firefox 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+sudo apt install firefox
+fi
+echo "Firefox is installed for" $user
+}
+
+terminator_check () {
+if [ $(dpkg-query -W -f='${Status}' terminator 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+sudo apt-get install terminator
+fi
+echo "Terminator is installed for" $user
+}
+
+check_again () {
+echo "Would you like to check on another program?"
+echo "1) yes"
+echo "2) no"
+echo
+read yes_no
+if [ $yes_no == 1 ]
+then
+         search_program
+else
+         echo "Have a nice day!"
+fi
+}
+
+search_program () {
+echo "What program are you searching for?"
+echo "1) chromium"
+echo "2) firefox"
+echo "3) terminator"
+echo "4) all"
+echo
+read program_type
+
+if [ $program_type == 1 ]
+then
+        chrome_check
+        check_again
+
+elif [ $program_type == 2 ]
+then    
+        firefox_check
+        check_again
+
+elif [ $program_type == 3 ]
+then
+        terminator_check
+        check_again
+        
+else
+        chrome_check
+        firefox_check
+        terminator_check
+fi
+}
+
+# ref: https://linuxize.com/post/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/
+# ref: https://www.reddit.com/r/bash/comments/9zcady/bash_script_to_install_program_if_not_installed/
+# ref: https://stackoverflow.com/questions/1298066/check-if-an-apt-get-package-is-installed-and-then-install-it-if-its-not-on-linu
+
+# Main
+
+search_program
+
+# End

@@ -42,8 +42,10 @@ echo
 read yes_no
 if [ $yes_no == 1 ]
 then
+clear
          search_program
 else
+clear
          echo "Have a nice day!"
 fi
 }
